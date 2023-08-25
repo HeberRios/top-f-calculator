@@ -6,14 +6,14 @@
 
     /* #### Backgrounds */
 
-    --very-dark-desaturated-blue: hsl(222, 26%, 31%);
-    --very-dark-desaturated-blue: hsl(223, 31%, 20%);
-    --very-dark-desaturated-blue: hsl(224, 36%, 15%);
+    --very-dark-desaturated-blue-light: hsl(222, 26%, 31%);
+    --very-dark-desaturated-blue-medium: hsl(223, 31%, 20%);
+    --very-dark-desaturated-blue-dark: hsl(224, 36%, 15%);
 
     /* #### Keys */
 
-    --desaturated-dark-blue: hsl(225, 21%, 49%);
-    --desaturated-dark-blue: hsl(224, 28%, 35%);
+    --desaturated-dark-blue-light: hsl(225, 21%, 49%);
+    --desaturated-dark-blue-dark: hsl(224, 28%, 35%);
 
     --red: hsl(6, 63%, 50%);
     --dark-red: hsl(6, 70%, 34%);
@@ -25,6 +25,9 @@
 
     --very-dark-grayish-blue: hsl(221, 14%, 31%);
     --white: hsl(0, 0%, 100%);
+
+    /* ## BORDER RADIUS */
+    --base-border-radius: 1rem;
 }
 
 /* CSS RESET ------------------------------------------------------------- */
@@ -34,8 +37,27 @@
     box-sizing: border-box;
 }
 
+/* GENERAL STYLING ------------------------------------------------------- */
 html {
     font-size: 62.5%;
+}
+
+body {
+    height: 100vh;
+    background-color: var(--very-dark-desaturated-blue-light);
+    font-family: "League Spartan", sans-serif;
+}
+
+main {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 60rem;
 }
 
 /* FONT FACES ------------------------------------------------------------ */
@@ -55,4 +77,24 @@ html {
     font-style: normal;
     font-weight: 700;
     src: url("../fonts/league-spartan-v11-latin-700.woff2") format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* SCREEN BOX SECTION ---------------------------------------------------- */
+.calculator {
+    width: 100%;
+}
+
+.screen-box {
+    display: flex;
+    justify-content: flex-end;
+    padding: 3rem;
+    padding-bottom: 2rem;
+    border-radius: var(--base-border-radius);
+    background-color: var(--very-dark-desaturated-blue-dark);
+}
+
+.screen-box output {
+    font-size: 4.8rem;
+	font-weight: 700;
+    color: var(--white);
 }
