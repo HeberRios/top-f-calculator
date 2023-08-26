@@ -1,18 +1,28 @@
 "use strict";
 
 // ELEMENTS --------------------------------------------------------------
-const numbers = document.querySelectorAll("[data-number]");
-
-//operators
-const operators = document.querySelectorAll("[data-operator]");
+// calculator display
 const displayOutput = document.getElementById("display-output");
 displayOutput.textContent = "";
+
+// numbers
+const numbers = document.querySelectorAll("[data-number]");
+
+// operators
+const operators = document.querySelectorAll("[data-operator]");
+
+// actions
+const actionBtns = document.querySelectorAll(`[data-action]`);
+console.log(actionBtns);
 
 // VARIABLES -------------------------------------------------------------
 let firstNumber = 0;
 let operator = "";
 let secondNumber = 0;
 let displayContent = "";
+let leftOperandRegExp = /[\d]+[\+\-\x\/]/g;
+let rightOperandRegExp = /[\+\-\x\/][\d]+/g;
+let operatorRegExp = /[\+\-\x\/]/g;
 
 // FUNCTIONS -------------------------------------------------------------
 
@@ -39,7 +49,7 @@ function operate(operator, a, b) {
         return add(a, b);
     } else if (operator === "-") {
         return subtract(a, b);
-    } else if (operator === "*") {
+    } else if (operator === "x") {
         return multiply(a, b);
     } else if (operator === "/") {
         return divide(a, b);
@@ -86,6 +96,36 @@ function saveDisplayContent() {
     displayContent = displayOutput.textContent;
 }
 
+function getLeftOperand(displayContent) {
+    return +displayContent.match(leftOperandRegExp).toString().slice(0, -1);
+}
+
+function getRightOperand(displayContent) {
+    return +displayContent.match(rightOperandRegExp).toString().slice(1);
+}
+
+function getOperator(displayContent) {
+    return displayContent.match(operatorRegExp).toString();
+}
+
+function executeCorrectAction(button) {
+    if (button.dataset.action === "equals") {
+        updateDisplay(
+            operate(
+                getOperator(displayContent),
+                getLeftOperand(displayContent),
+                getRightOperand(displayContent)
+            )
+        );
+    } else {
+        console.log("not yet implemented");
+    }
+}
+
+function updateDisplay(displayContent) {
+    displayOutput.textContent = displayContent;
+}
+
 // POPULATE THE DISPLAY
 
 //NUMBERS
@@ -101,5 +141,12 @@ operators.forEach((operator) => {
     operator.addEventListener("click", function () {
         displayPressedOperator(operator);
         saveDisplayContent();
+    });
+});
+
+//ACTIONS
+actionBtns.forEach((button) => {
+    button.addEventListener("click", function () {
+        executeCorrectAction(button);
     });
 });
