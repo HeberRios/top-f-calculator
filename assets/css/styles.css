@@ -94,6 +94,7 @@ button {
 
 /* SCREEN BOX SECTION ---------------------------------------------------- */
 .screen-box {
+    height:12.8rem;
     display: flex;
     justify-content: flex-end;
     padding: 4rem;
