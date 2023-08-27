@@ -2,7 +2,7 @@
 
 // ELEMENTS --------------------------------------------------------------
 // calculator display
-const displayOutput = document.getElementById("display-output");
+const displayOutput = document.getElementById("display-output-current");
 displayOutput.textContent = "";
 
 // numbers
