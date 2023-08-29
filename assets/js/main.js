@@ -139,11 +139,17 @@ function deleteButton() {
     displayOutput.textContent = displayOutput.textContent.slice(0, -1);
 }
 
+function clearDisplay() {
+    displayOutput.textContent = "";
+}
+
 function executePressedAction(button) {
     if (button.dataset.action === "equals") {
         checkDisplayValueForEqualTo(button);
     } else if (button.dataset.action === "delete") {
         deleteButton();
+    } else if (button.dataset.action === "reset") {
+        clearDisplay();
     }
 }
 // Store the value of the display
