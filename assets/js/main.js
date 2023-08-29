@@ -1,5 +1,11 @@
 "use strict";
 
+// SELECTING ELEMENTS
+const displayOutput = document.getElementById("display-output");
+const numbers = document.querySelectorAll("[data-number]");
+const operators = document.querySelectorAll("[data-operator]");
+const actions = document.querySelectorAll("[data-action]");
+
 // VARIABLES -------------------------------------------------------------
 let firstNumber = 0;
 let operator = "";
