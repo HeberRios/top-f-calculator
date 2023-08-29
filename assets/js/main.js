@@ -135,9 +135,15 @@ function checkDisplayValueForEqualTo(button) {
     }
 }
 
+function deleteButton() {
+    displayOutput.textContent = displayOutput.textContent.slice(0, -1);
+}
+
 function executePressedAction(button) {
     if (button.dataset.action === "equals") {
         checkDisplayValueForEqualTo(button);
+    } else if (button.dataset.action === "delete") {
+        deleteButton();
     }
 }
 // Store the value of the display
@@ -165,7 +171,7 @@ operators.forEach((operator) => {
 // Actions
 actions.forEach((button) => {
     button.addEventListener("click", function () {
-        checkDisplayValueForEqualTo(button);
+        executePressedAction(button);
         saveDisplayValue();
     });
 });
