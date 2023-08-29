@@ -94,18 +94,20 @@ button {
 
 /* SCREEN BOX SECTION ---------------------------------------------------- */
 .screen-box {
+    min-height: 12.8rem;
     display: flex;
-    justify-content: flex-end;
     padding: 4rem;
     padding-bottom: 3rem;
     border-radius: var(--base-border-radius);
     background-color: var(--very-dark-desaturated-blue-dark);
 }
 
-.screen-box output {
+.display-output {
+    width: 100%;
     font-size: 4.8rem;
     font-weight: 700;
     color: var(--white);
+    text-align: right;
 }
 
 /* BUTTONS BOX SECTION --------------------------------------------------- */
