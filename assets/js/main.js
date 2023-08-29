@@ -96,11 +96,11 @@ function displayPressedNumber(number) {
 
 function checkDisplayValueForOperators(operator) {
     if (displayValue === "") {
-        console.log("nothing");
-        // return;
+        // console.log("nothing");
+        return;
     } else if (/^\d+[\+\-\x\/]$/g.test(displayValue)) {
-        console.log("numbers and operator");
-        // return;
+        // console.log("numbers and operator");
+        return;
     } else if (/^\d+[\+\-\x\/]\d+$/g.test(displayValue)) {
         showOperationResult();
         displayPressedOperator(operator);
@@ -121,6 +121,25 @@ function displayPressedOperator(operator) {
     }
 }
 
+// Execute the pressed action
+function checkDisplayValueForEqualTo(button) {
+    if (displayValue === "") {
+        // console.log("nothing");
+        return;
+    } else if (/^\d+[\+\-\x\/]\d+$/g.test(displayValue)) {
+        // console.log("pair of operands and an operator");
+        showOperationResult();
+    } else {
+        // console.log("not evaluable");
+        return;
+    }
+}
+
+function executePressedAction(button) {
+    if (button.dataset.action === "equals") {
+        checkDisplayValueForEqualTo(button);
+    }
+}
 // Store the value of the display
 function saveDisplayValue() {
     displayValue = displayOutput.textContent;
@@ -138,8 +157,15 @@ numbers.forEach((number) => {
 // Operators
 operators.forEach((operator) => {
     operator.addEventListener("click", function () {
-        // displayPressedOperator(operator);
         checkDisplayValueForOperators(operator);
+        saveDisplayValue();
+    });
+});
+
+// Actions
+actions.forEach((button) => {
+    button.addEventListener("click", function () {
+        checkDisplayValueForEqualTo(button);
         saveDisplayValue();
     });
 });
