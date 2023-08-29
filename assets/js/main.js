@@ -7,10 +7,12 @@ const operators = document.querySelectorAll("[data-operator]");
 const actions = document.querySelectorAll("[data-action]");
 
 // VARIABLES -------------------------------------------------------------
-let displayValue = "";
+let displayValue = displayOutput.textContent;
 let firstNumber = 0;
 let operator = "";
 let secondNumber = 0;
+// let justNumbersRegExp = /^\d+$/g;
+// let numbersAndOperator = /^\d+[\+\-\x\/]$/g;
 
 // FUNCTIONS -------------------------------------------------------------
 
@@ -44,6 +46,7 @@ function operate(operator, a, b) {
     }
 }
 
+// Display number and operators
 function displayPressedNumber(number) {
     if (number.dataset.number === "1") {
         displayOutput.textContent += "1";
@@ -68,6 +71,18 @@ function displayPressedNumber(number) {
     }
 }
 
+function checkDisplayValueForOperators(operator) {
+    if (displayValue === "") {
+        console.log("nothing");
+        // return;
+    } else if (/^\d+[\+\-\x\/]$/g.test(displayValue)) {
+        console.log("numbers and operator");
+        // return;
+    } else if (/^\d+$/g.test(displayValue)) {
+        displayPressedOperator(operator);
+    }
+}
+
 function displayPressedOperator(operator) {
     if (operator.dataset.operator === "+") {
         displayOutput.textContent += "+";
@@ -80,6 +95,7 @@ function displayPressedOperator(operator) {
     }
 }
 
+// Store the value of the display
 function saveDisplayValue() {
     displayValue = displayOutput.textContent;
 }
@@ -94,10 +110,10 @@ numbers.forEach((number) => {
 });
 
 // Operators
-
 operators.forEach((operator) => {
     operator.addEventListener("click", function () {
-        displayPressedOperator(operator);
+        // displayPressedOperator(operator);
+        checkDisplayValueForOperators(operator);
         saveDisplayValue();
     });
 });
