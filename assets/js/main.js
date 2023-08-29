@@ -39,11 +39,34 @@ function operate(operator, a, b) {
         return add(a, b);
     } else if (operator === "-") {
         return subtract(a, b);
-    } else if (operator === "*") {
+    } else if (operator === "x") {
         return multiply(a, b);
     } else if (operator === "/") {
         return divide(a, b);
     }
+}
+
+//Show operation result in display
+function showOperationResult() {
+    const newDisplayValue = operate(
+        getOperator(displayValue),
+        getLeftOperand(displayValue),
+        getRightOperand(displayValue)
+    );
+    displayOutput.textContent = newDisplayValue;
+}
+
+//Get the operands and operator
+function getLeftOperand(displayValue) {
+    return +displayValue.match(/\d+(?=[\+\-\x\/])/g).toString();
+}
+
+function getOperator(displayValue) {
+    return displayValue.match(/[\+\-\x\/]/g).toString();
+}
+
+function getRightOperand(displayValue) {
+    return +displayValue.match(/(?<=[\+\-\x\/])\d+/g).toString();
 }
 
 // Display number and operators
@@ -78,6 +101,9 @@ function checkDisplayValueForOperators(operator) {
     } else if (/^\d+[\+\-\x\/]$/g.test(displayValue)) {
         console.log("numbers and operator");
         // return;
+    } else if (/^\d+[\+\-\x\/]\d+$/g.test(displayValue)) {
+        showOperationResult();
+        displayPressedOperator(operator);
     } else if (/^\d+$/g.test(displayValue)) {
         displayPressedOperator(operator);
     }
