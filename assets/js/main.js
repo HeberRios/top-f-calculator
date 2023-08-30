@@ -5,14 +5,13 @@ const displayOutput = document.getElementById("display-output");
 const numbers = document.querySelectorAll("[data-number]");
 const operators = document.querySelectorAll("[data-operator]");
 const actions = document.querySelectorAll("[data-action]");
+const decimalPoint = document.querySelector("[data-decimal]");
 
 // VARIABLES -------------------------------------------------------------
 let displayValue = displayOutput.textContent;
 let firstNumber = 0;
 let operator = "";
 let secondNumber = 0;
-// let justNumbersRegExp = /^\d+$/g;
-// let numbersAndOperator = /^\d+[\+\-\x\/]$/g;
 
 // FUNCTIONS -------------------------------------------------------------
 
@@ -58,7 +57,7 @@ function showOperationResult() {
 
 //Get the operands and operator
 function getLeftOperand(displayValue) {
-    return +displayValue.match(/\d+(?=[\+\-\x\/])/g).toString();
+    return +displayValue.match(/\d+\.?(\d?)+(?=[\+\-\x\/])/g).toString();
 }
 
 function getOperator(displayValue) {
@@ -66,10 +65,10 @@ function getOperator(displayValue) {
 }
 
 function getRightOperand(displayValue) {
-    return +displayValue.match(/(?<=[\+\-\x\/])\d+/g).toString();
+    return +displayValue.match(/(?<=[\+\-\x\/])\d+\.?(\d?)+/g).toString();
 }
 
-// Display number and operators
+// Display number, operators and decimal point
 function displayPressedNumber(number) {
     if (number.dataset.number === "1") {
         displayOutput.textContent += "1";
@@ -98,13 +97,21 @@ function checkDisplayValueForOperators(operator) {
     if (displayValue === "") {
         // console.log("nothing");
         return;
-    } else if (/^\d+[\+\-\x\/]$/g.test(displayValue)) {
-        // console.log("numbers and operator");
+    } else if (/^\d+\.$/g.test(displayValue)) {
+        // console.log("previous character is a decimal point");
         return;
-    } else if (/^\d+[\+\-\x\/]\d+$/g.test(displayValue)) {
-        showOperationResult();
+    } else if (/^\d+\.?(\d?)+$/g.test(displayValue)) {
+        // console.log("heeh");
         displayPressedOperator(operator);
-    } else if (/^\d+$/g.test(displayValue)) {
+    } else if (/^\d+\.?(\d?)+[\+\-\x\/]$/g.test(displayValue)) {
+        // console.log("already an operator");
+        return;
+    } else if (/^\d+\.?(\d?)+[\+\-\x\/]\d+\.$/g.test(displayValue)) {
+        // console.log("previous character is a decimal point 2");
+        return;
+    } else if (/^\d+\.?(\d?)+[\+\-\x\/]\d+\.?(\d?)+$/g.test(displayValue)) {
+        // console.log("resolve operation");
+        showOperationResult();
         displayPressedOperator(operator);
     }
 }
@@ -121,12 +128,43 @@ function displayPressedOperator(operator) {
     }
 }
 
+function checkDisplayValueForDecimalPoint() {
+    if (displayValue === "") {
+        displayOutput.textContent = "0.";
+    } else if (/^\d+\.$/g.test(displayValue)) {
+        console.log("already a decimal point1");
+        return;
+    } else if (/^\d+\.(\d?)+$/g.test(displayValue)) {
+        console.log("already a decimal point2");
+        return;
+    } else if (/^\d+\.(\d?)+[\+\-\x\/]$/g.test(displayValue)) {
+        console.log("previous character is an operator");
+        return;
+    } else if (/^\d+\.?(\d?)+[\+\-\x\/]\d+$/g.test(displayValue)) {
+        console.log("a number an operator and another number");
+        displayDecimalPoint();
+    } else if (/^\d+\.?\d+[\+\-\x\/]\d+\.$/g.test(displayValue)) {
+        console.log("already a decimal point3");
+        return;
+    } else if (/^\d+\.?\d+[\+\-\x\/]\d+\.(\d?)+$/g.test(displayValue)) {
+        console.log("already a decimal point4");
+        return;
+    } else if (/^\d+$/g.test(displayValue)) {
+        console.log("nah bro fraudkuna");
+        displayDecimalPoint();
+    }
+}
+
+function displayDecimalPoint() {
+    displayOutput.textContent += ".";
+}
+
 // Execute the pressed action
 function checkDisplayValueForEqualTo(button) {
     if (displayValue === "") {
         // console.log("nothing");
         return;
-    } else if (/^\d+[\+\-\x\/]\d+$/g.test(displayValue)) {
+    } else if (/^\d+\.?(\d?)+[\+\-\x\/]\d+\.?(\d?)+$/g.test(displayValue)) {
         // console.log("pair of operands and an operator");
         showOperationResult();
     } else {
@@ -152,6 +190,7 @@ function executePressedAction(button) {
         clearDisplay();
     }
 }
+
 // Store the value of the display
 function saveDisplayValue() {
     displayValue = displayOutput.textContent;
@@ -180,4 +219,10 @@ actions.forEach((button) => {
         executePressedAction(button);
         saveDisplayValue();
     });
+});
+
+// Decimal point
+decimalPoint.addEventListener("click", function () {
+    checkDisplayValueForDecimalPoint();
+    saveDisplayValue();
 });
